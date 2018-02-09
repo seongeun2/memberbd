@@ -12,7 +12,7 @@ img{
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <link type="text/css" href="/memberboard/css/main.css" rel="stylesheet" />
-<title>Insert title here</title>
+<title>회원등록</title>
 </head>
 <body>
        <!--forms-->
@@ -57,7 +57,7 @@ img{
                                 </div>
                                 <div class="form-group">
                                         <label class="control-label required" for="name">특이사항</label>
-                                        <input id="content" name=""content"" type="text" class="form-control" placeholder="textarea">
+                                        <input id="content" name="content" type="text" class="form-control" placeholder="textarea">
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
                                     <div class="form-group">
