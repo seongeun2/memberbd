@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class memDAO {
@@ -48,31 +50,32 @@ public class memDAO {
 		}
 	
 	
-	//회원등록 (insert)
-	public void insert(memVO aaa) {
+	//회원등록 (Insert)
+	public void insert(memVO member) {
 		String sql="";
 		Connection con = getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int number=0;
 		try {
-			sql="select memser.nextval from dual";
-			pstmt = con.prepareStatement(sql);
+			pstmt = con.prepareStatement("select MemberSer.nextval from dual");
 			rs = pstmt.executeQuery();
-			if(rs.next())
+			System.out.println(rs);
+			if(rs.next()) 
 				number = rs.getInt(1)+1;
-			else
-				number = 1;
-			sql="insert into memberbd(memnum,memid,name,birth,email,passwd,reg_date,mem_level) "
+			else number = 1;
+			sql="insert into memberbd(m_num,m_id,m_name,m_birth,m_email,m_pwd,m_reg_date,m_level) "
 					+ "values(?,?,?,?,?,?,sysdate,?)";
+			System.out.println(sql);
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, number);
-			pstmt.setString(2, aaa.getMemid());
-			pstmt.setString(3, aaa.getName());
-			pstmt.setString(4, aaa.getBirth());
-			pstmt.setString(5, aaa.getEmail());
-			pstmt.setString(6, aaa.getPasswd());
-			pstmt.setString(7, aaa.getMem_level());
+			pstmt.setString(2, member.getM_id());
+			pstmt.setString(3, member.getM_name());
+			pstmt.setString(4, member.getM_birth());
+			pstmt.setString(5, member.getM_email());
+			pstmt.setString(6, member.getM_pwd());
+			pstmt.setString(7, member.getM_level());
+			pstmt.executeQuery();
 			
 		}catch(SQLException e1) {
 			e1.printStackTrace();
@@ -81,30 +84,34 @@ public class memDAO {
 		}
 	}
 	
-	//회원목록
-	public memVO memList(int num) {
+	//회원목록 (List)
+	public List memList() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		memVO memList = null;
+		List memList = null;
 		String sql="";
 		try {
 			conn = getConnection();
-			sql = "select * from board where num = ?";
+			sql = "select m_num, m_id, m_name, m_birth, m_reg_date, m_level from memberbd\r\n" + 
+					"order by m_reg_date desc";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				memList = new memVO();
-				memList.setMemnum(rs.getInt("num"));
-				memList.setMemid(rs.getString("id"));
-				memList.setName(rs.getString("name"));
-				memList.setBirth(rs.getString("birth"));
-				memList.setReg_date(rs.getTimestamp("reg_date"));
-				memList.setMem_level(rs.getString("level"));
+				memList = new ArrayList();
+				do {
+					memVO member = new memVO();
+					member.setM_num(rs.getInt("m_num"));
+					member.setM_id(rs.getString("m_id"));
+					member.setM_name(rs.getString("m_name"));
+					member.setM_birth(rs.getString("m_birth"));
+					member.setM_reg_date(rs.getTimestamp("m_reg_date"));
+					member.setM_level(rs.getString("m_level"));
+					memList.add(member);
+				
+				} while(rs.next());
 			}
-			
 		}catch(Exception e) {
 			e.printStackTrace();
 	}finally {close(conn, rs, pstmt);}
@@ -112,11 +119,128 @@ public class memDAO {
 	}
 	
 	
+	//회원수 Count
+	public int SelectCountMem() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql="";
+		int count = 0;
+		
+		try {
+			conn = getConnection();
+			sql = "select nvl(count(*),0) from memberbd";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+	}finally {close(conn, rs, pstmt);}
+	return count;
+	}
+	
+	
+	//회원상세보기
+	public memVO SelectViewMem(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql="";
+		memVO member = null;
+		
+		try {
+			conn = getConnection();
+			
+			sql = "select * from memberbd where m_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				member = new memVO();
+				member.setM_num(rs.getInt("m_num"));
+				member.setM_id(rs.getString("m_id"));
+				member.setM_name(rs.getString("m_name"));
+				member.setM_birth(rs.getString("m_birth"));
+				member.setM_email(rs.getString("m_email"));
+				member.setM_pwd(rs.getString("m_pwd"));
+				member.setM_reg_date(rs.getDate("m_reg_date"));
+				member.setM_level(rs.getString("m_level"));
+				
+				}	
+			}catch(Exception e) {
+				e.printStackTrace();
+		}finally {close(conn, rs, pstmt);}
+		return member;
+		}
 	
 	
 	
+	public int updateMember(memVO member) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql="";
+		ResultSet rs = null;
+		int pwdcheck = 0;
+		
+		try {
+			conn = getConnection();
+			sql = "update memberbd set m_id=?,m_name=?,m_birth=?,m_email=?,m_level=? where m_num=? and m_pwd=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getM_id());
+			pstmt.setString(2, member.getM_name());
+			pstmt.setString(3, member.getM_birth());
+			pstmt.setString(4, member.getM_email());
+			pstmt.setString(5, member.getM_level());
+			pstmt.setInt(6, member.getM_num());
+			pstmt.setString(7, member.getM_pwd());
+			pwdcheck = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+				e.printStackTrace();
+		}finally {
+			close(conn, null, pstmt);
+		}return pwdcheck;
+	}
 	
 	
-	
-	
+	//회원삭제
+	public memVO deleteMember(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql="";
+		memVO member = null;
+		
+		try {
+			conn = getConnection();
+			
+			sql = "select * from memberbd where m_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				member = new memVO();
+				member.setM_num(rs.getInt("m_num"));
+				member.setM_id(rs.getString("m_id"));
+				member.setM_name(rs.getString("m_name"));
+				member.setM_birth(rs.getString("m_birth"));
+				member.setM_email(rs.getString("m_email"));
+				member.setM_pwd(rs.getString("m_pwd"));
+				member.setM_reg_date(rs.getDate("m_reg_date"));
+				member.setM_level(rs.getString("m_level"));
+				
+				}	
+			}catch(Exception e) {
+				e.printStackTrace();
+		}finally {close(conn, rs, pstmt);}
+		return member;
+		}
+
 }
+ 

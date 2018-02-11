@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+<%request.setCharacterEncoding("euc-kr"); %>
 <!-- <table class="w3-container w3-light-gray w3-hover-pale-red"> -->
 <!DOCTYPE html>
 <html>
