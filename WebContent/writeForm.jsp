@@ -33,11 +33,11 @@ function insert() {
 
 function rewrite(){
 	 document.writeForm.reset();
-	}
+}
 	
 function golist(){
 	location.href = "/memberboard/list.jsp"; 
-	}
+}
 
 
 </script>

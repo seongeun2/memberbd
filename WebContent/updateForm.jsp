@@ -9,7 +9,6 @@
 	try{
 		memDAO dao = memDAO.getInstance();
 		memVO vo = dao.SelectViewMem(num);
-		System.out.println(vo);
 	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -23,7 +22,7 @@ img{
 </style>
 <script type="text/javascript">
 function update() {
-	var v = document.writeForm;
+	var v = document.updateForm;
 	v.submit();
 }
 	
@@ -50,11 +49,12 @@ function golist(){
 	        	</div>
 <div class="account-holder">
 	<h3 align="center">****Haru 정보수정****</h3><br>
-	<form name="writeForm" method="post" action="<%=request.getContextPath() %>/updatePro.jsp">
+	<form name="updateForm" method="post" action="<%=request.getContextPath() %>/updatePro.jsp">
+	<input type="hidden" name="m_num" value="<%=vo.getM_num() %>">
 	<div class="form-top">
 			<div class="form-group">
 				<label class="control-label required" for="phone">아이디<sup style="color:red">*</sup></label>
-		        <input id="m_id" name="m_id" type="text" class="form-control" readonly />
+		        <input id="m_id" name="m_id" type="text" class="form-control" value="<%=vo.getM_id() %>" readonly />
 		    </div>
 		    <div class="form-group">
                 <label class="control-label required" for="password">비밀번호<sup style="color:red">*</sup></label>

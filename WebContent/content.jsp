@@ -30,6 +30,10 @@ function update(){
 	location.href = "updateForm.jsp?num=<%=vo.getM_num()%>";
 }
 
+function m_delete(){
+	location.href = "deleteForm.jsp?num=<%=vo.getM_num()%>";
+}
+
 
 </script>
 
@@ -83,7 +87,7 @@ function update(){
         
         <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12" style="text-align: center">
             <input type="button" class="btn btn-primary btn-block" onclick="update();" value="정보수정">
-            <input type="button" class="btn btn-primary btn-block" value="회원삭제">
+            <input type="button" class="btn btn-primary btn-block" onclick="m_delete();" value="회원탈퇴">
             <input type="button" class="btn btn-primary btn-block" onclick="golist();" value="회원목록">
         </div>
        <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">

@@ -93,7 +93,7 @@ public class memDAO {
 		String sql="";
 		try {
 			conn = getConnection();
-			sql = "select m_num, m_id, m_name, m_birth, m_reg_date, m_level from memberbd\r\n" + 
+			sql = "select m_num, m_id, m_name, m_birth, m_reg_date, m_level from memberbd" + 
 					"order by m_reg_date desc";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -179,17 +179,15 @@ public class memDAO {
 		}
 	
 	
-	
+	//정보수정
 	public int updateMember(memVO member) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql="";
 		ResultSet rs = null;
 		int pwdcheck = 0;
-		
 		try {
 			conn = getConnection();
-			sql = "update memberbd set m_id=?,m_name=?,m_birth=?,m_email=?,m_level=? where m_num=? and m_pwd=?";
+			String sql = "update memberbd set m_id=?,m_name=?,m_birth=?,m_email=?,m_level=? where m_num=? and m_pwd=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getM_id());
 			pstmt.setString(2, member.getM_name());
@@ -199,7 +197,6 @@ public class memDAO {
 			pstmt.setInt(6, member.getM_num());
 			pstmt.setString(7, member.getM_pwd());
 			pwdcheck = pstmt.executeUpdate();
-			
 		}catch(Exception e) {
 				e.printStackTrace();
 		}finally {
@@ -209,37 +206,24 @@ public class memDAO {
 	
 	
 	//회원삭제
-	public memVO deleteMember(int num) {
+	public int deleteMember(int num, String passwd) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql="";
-		memVO member = null;
-		
+		String sql="delete from memberbd where m_num=? and m_pwd=?";
+		int x = -1;
 		try {
 			conn = getConnection();
-			
-			sql = "select * from memberbd where m_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, num);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				member = new memVO();
-				member.setM_num(rs.getInt("m_num"));
-				member.setM_id(rs.getString("m_id"));
-				member.setM_name(rs.getString("m_name"));
-				member.setM_birth(rs.getString("m_birth"));
-				member.setM_email(rs.getString("m_email"));
-				member.setM_pwd(rs.getString("m_pwd"));
-				member.setM_reg_date(rs.getDate("m_reg_date"));
-				member.setM_level(rs.getString("m_level"));
-				
-				}	
-			}catch(Exception e) {
-				e.printStackTrace();
-		}finally {close(conn, rs, pstmt);}
-		return member;
+			pstmt.setString(2, passwd);
+			x = pstmt.executeUpdate();
+			}catch(SQLException ex){
+				ex.printStackTrace();
+			}finally {
+				close(conn, rs, pstmt);
+			}
+		return x;
 		}
 
 }

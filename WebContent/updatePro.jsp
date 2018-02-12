@@ -16,23 +16,20 @@
 <%
 	memDAO dao = memDAO.getInstance();
 	int pwdcheck = dao.updateMember(member);
+	System.out.println("이건 뭐임"+pwdcheck);
 	System.out.println("뭐냐대체"+pwdcheck);
 %>
-<%
-	if(pwdcheck==1){ %>
-    response.sendRedirect("list.jsp");
+<%	if(pwdcheck==1){ %>
+    <META http-equiv=refresh content="0;url=list.jsp">
 
-<%
-	}else{
-%>
+
+<%	}else{ %>
 
 
 <script type="text/javascript">
 alert("비밀번호가 맞지 않습니다.");
 history.go(-1);
 </script>
-<%
-	}
-%>
+<% } %>
 </body>
 </html>
