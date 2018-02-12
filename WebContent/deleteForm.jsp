@@ -22,10 +22,14 @@ img{
 	margin: 0 auto;
 }
 </style>
+
 <script type="text/javascript">
 function memberdelete() {
 	var v = document.deleteForm;
 	v.submit();
+}
+function golist(){
+	location.href = "/memberboard/list.jsp"; 
 }
 </script>
 </head>

@@ -16,8 +16,6 @@
 <%
 	memDAO dao = memDAO.getInstance();
 	int pwdcheck = dao.updateMember(member);
-	System.out.println("ÀÌ°Ç ¹¹ÀÓ"+pwdcheck);
-	System.out.println("¹¹³Ä´ëÃ¼"+pwdcheck);
 %>
 <%	if(pwdcheck==1){ %>
     <META http-equiv=refresh content="0;url=list.jsp">

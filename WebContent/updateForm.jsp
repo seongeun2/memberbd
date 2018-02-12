@@ -5,7 +5,6 @@
 <%request.setCharacterEncoding("euc-kr"); %>
 <%
 	int num = Integer.parseInt(request.getParameter("num"));
-	System.out.println(num);
 	try{
 		memDAO dao = memDAO.getInstance();
 		memVO vo = dao.SelectViewMem(num);
