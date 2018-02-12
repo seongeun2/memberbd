@@ -60,13 +60,12 @@ public class memDAO {
 		try {
 			pstmt = con.prepareStatement("select MemberSer.nextval from dual");
 			rs = pstmt.executeQuery();
-			System.out.println(rs);
 			if(rs.next()) 
 				number = rs.getInt(1)+1;
 			else number = 1;
+			
 			sql="insert into memberbd(m_num,m_id,m_name,m_birth,m_email,m_pwd,m_reg_date,m_level) "
 					+ "values(?,?,?,?,?,?,sysdate,?)";
-			System.out.println(sql);
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, number);
 			pstmt.setString(2, member.getM_id());
@@ -80,7 +79,7 @@ public class memDAO {
 		}catch(SQLException e1) {
 			e1.printStackTrace();
 		}finally {
-			close(con,rs,pstmt);
+			close(con, rs, pstmt);
 		}
 	}
 	
@@ -93,8 +92,8 @@ public class memDAO {
 		String sql="";
 		try {
 			conn = getConnection();
-			sql = "select m_num, m_id, m_name, m_birth, m_reg_date, m_level from memberbd" + 
-					"order by m_reg_date desc";
+			sql = "select m_num, m_id, m_name, m_birth, m_reg_date, m_level from memberbd "
+					+ "order by m_reg_date desc";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			

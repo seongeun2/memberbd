@@ -3,14 +3,14 @@ package member;
 import java.util.Date;
 
 public class memVO {
-	private int m_num;			//회원번호
-	private String m_id;		//아이디
-	private String m_name;		//이름
-	private String m_birth;		//생일
-	private String m_email;		//이메일
-	private String m_pwd;		//비밀번호
+	private int m_num;				//회원번호
+	private String m_id;			//아이디
+	private String m_name;			//이름
+	private String m_birth;			//생일
+	private String m_email;			//이메일
+	private String m_pwd;			//비밀번호
 	private Date m_reg_date;		//가입일
-	private String m_level;	//회원등급
+	private String m_level;			//회원등급
 	public int getM_num() {
 		return m_num;
 	}
@@ -59,7 +59,5 @@ public class memVO {
 	public void setM_level(String m_level) {
 		this.m_level = m_level;
 	}
-	
-	
 	
 }
